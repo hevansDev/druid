@@ -139,18 +139,10 @@ bin/post-index-task --file quickstart/tutorial/transform-index.json --url http:/
 
 ## Query the transformed data
 
-Let's run `bin/dsql` and issue a `select * from "transform-tutorial";` query to see what was ingested:
+Let's issue a `select * from "transform-tutorial";` query to the SQL API and see what data was ingested.
 
 ```bash
-dsql> select * from "transform-tutorial";
-┌──────────────────────────┬────────────────┬───────┬──────────┬────────┬───────────────┐
-│ __time                   │ animal         │ count │ location │ number │ triple-number │
-├──────────────────────────┼────────────────┼───────┼──────────┼────────┼───────────────┤
-│ 2018-01-01T05:01:00.000Z │ super-mongoose │     1 │        2 │    200 │           600 │
-│ 2018-01-01T06:01:00.000Z │ super-snake    │     1 │        3 │    300 │           900 │
-│ 2018-01-01T07:01:00.000Z │ super-octopus  │     1 │        1 │    100 │           300 │
-└──────────────────────────┴────────────────┴───────┴──────────┴────────┴───────────────┘
-Retrieved 3 rows in 0.03s.
+curl -X POST -H "Content-Type: application/json" -d '{"query": "select * from \"transform-tutorial\""}' http://localhost:8888/druid/v2/sql
 ```
 
 The "lion" row has been discarded, the `animal` column has been transformed, and we have both the original and transformed `number` column.
